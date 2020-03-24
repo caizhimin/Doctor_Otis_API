@@ -13,7 +13,7 @@ def DO_data(request, unit_number):
         data = cosmos.query('DO_auto_maintenance_result',
                             fields=('DO_value',), query_params={'UnitNumber': unit_number})
         if data:
-            return Response(data[0])
+            return Response(data[0]['DO_value'])
         else:
             content = {'error': 'unit number not found'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
