@@ -20,5 +20,7 @@ from API import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data)
+    re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
+    path('test/', views.test),
+
 ]

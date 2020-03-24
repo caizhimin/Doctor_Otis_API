@@ -3,7 +3,6 @@ from utils.cosmos_db import cosmos
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import Http404
 
 
 # Create your views here.
@@ -18,3 +17,8 @@ def DO_data(request, unit_number):
         else:
             content = {'error': 'unit number not found'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def test(request):
+    return Response(111)
