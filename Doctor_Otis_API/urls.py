@@ -19,6 +19,9 @@ from API import views
 from django.contrib.auth.models import User, Group
 from rest_framework import generics, permissions, serializers
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+from django.conf import settings
+from oauth2_provider.urls import base_urlpatterns, app_name
+import oauth2_provider.views as oauth2_views
 
 admin.autodiscover()
 
@@ -58,12 +61,16 @@ class GroupList(generics.ListAPIView):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('users/', UserList.as_view()),
     path('users/<pk>/', UserDetails.as_view()),
     path('groups/', GroupList.as_view()),
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
     path('test/', views.test),
-
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
+else:
+    urlpatterns += base_urlpatterns
 
