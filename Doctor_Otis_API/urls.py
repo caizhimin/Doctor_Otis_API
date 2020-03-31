@@ -14,13 +14,56 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from API import views
+from django.contrib.auth.models import User, Group
+from rest_framework import generics, permissions, serializers
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+
+admin.autodiscover()
+
+
+# first we define the serializers
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', "first_name", "last_name")
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ("name",)
+
+
+# Create the API views
+class UserList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetails(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class GroupList(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
+    required_scopes = ['groups']
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path('users/', UserList.as_view()),
+    path('users/<pk>/', UserDetails.as_view()),
+    path('groups/', GroupList.as_view()),
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
     path('test/', views.test),
 
 ]
+

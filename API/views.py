@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 # Create your views here.
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def DO_data(request, unit_number):
     if request.method in ('GET', 'POST'):
         try:
