@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import pymysql
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,13 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#=!5-!mowf(k!j7-k*qxbp+cs($sa1+%nya5-k(eyw)+@^&s24'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-pymysql.install_as_MySQLdb()
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
@@ -40,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'oauth2_provider',
     'rest_framework',
+    'Doctor_Otis_API'
 ]
 
 MIDDLEWARE = [
