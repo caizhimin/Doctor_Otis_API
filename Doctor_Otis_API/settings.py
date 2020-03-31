@@ -121,7 +121,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'},
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 86400
 }
 
 REST_FRAMEWORK = {
