@@ -60,7 +60,6 @@ class GroupList(generics.ListAPIView):
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('users/', UserList.as_view()),
     path('users/<pk>/', UserDetails.as_view()),
     path('groups/', GroupList.as_view()),
@@ -68,9 +67,9 @@ urlpatterns = [
     path('test/', views.test),
 ]
 
-
 if settings.DEBUG:
     urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    urlpatterns += path('admin/', admin.site.urls),
+
 else:
     urlpatterns += base_urlpatterns
-
