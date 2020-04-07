@@ -18,7 +18,7 @@ def DO_data(request, unit_number):
         if data:
             return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
         else:
-            return Response({'Result': 99, 'Message': 'eventlog不存在', 'Data': {}})
+            return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
 
 
 @api_view(['GET'])
