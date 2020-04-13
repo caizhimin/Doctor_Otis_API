@@ -13,12 +13,12 @@ def DO_data(request, unit_number):
         try:
             data = cosmos.query('DO_auto_maintenance_result',
                                 fields=('DO_value',), query_params={'UnitNumber': unit_number})
-        except:
+        except:     
             return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
         if data:
             return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
         else:
-            return Response({'Result': 99, 'Message': 'eventlog不存在', 'Data': {}})
+            return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
 
 
 @api_view(['GET'])
