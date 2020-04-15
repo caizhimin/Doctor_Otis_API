@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['https://do-api-chn-vegctujtkpkfg.azurewebsites.net', '*']
 
@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'API.my_middleware.CheckSourceMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Doctor_Otis_API.urls'
@@ -146,4 +148,3 @@ try:
     from local_settings import *
 except:
     pass
-
