@@ -1,8 +1,12 @@
+from datetime import datetime
 from django.shortcuts import render
 from utils.cosmos_db import cosmos
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import HttpResponse, Http404
+from oauth2_provider.oauth2_validators import AccessToken
+
 
 
 # Create your views here.
@@ -24,3 +28,16 @@ def DO_data(request, unit_number):
 @api_view(['GET'])
 def test(request):
     return Response(111)
+
+
+def delete_expires_token(request):
+    """
+    删除过期token
+    :param request:
+    :return:
+    """
+    if request.META['REMOTE_ADDR'] == '127.0.0.1':
+        AccessToken.objects.filter(expires__lt=datetime.now()).delete()
+        return HttpResponse('delete expires token success')
+    else:
+        raise Http404
