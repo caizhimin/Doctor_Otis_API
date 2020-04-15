@@ -64,6 +64,7 @@ urlpatterns = [
     path('users/<pk>/', UserDetails.as_view()),
     path('groups/', GroupList.as_view()),
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
+    re_path('^delete_token/$', views.delete_expires_token),
     path('test/', views.test),
 ]
 
