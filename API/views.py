@@ -12,7 +12,7 @@ from API.models import ApiRecord
 
 # Create your views here.
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def DO_data(request, unit_number):
     if request.method in ('GET', 'POST'):
         try:

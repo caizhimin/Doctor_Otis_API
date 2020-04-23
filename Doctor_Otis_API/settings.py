@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'oauth2_provider',
     'rest_framework',
-    'Doctor_Otis_API'
+    'Doctor_Otis_API',
+    'API'
 ]
 
 MIDDLEWARE = [
