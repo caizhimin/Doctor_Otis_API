@@ -1,4 +1,3 @@
-import pytz
 from django.db import models
 from datetime import datetime
 # Create your models here.
@@ -17,6 +16,5 @@ class ApiRecord(models.Model):
         record.user_agent = user_agent
         record.authorization = authorization
         record.unit_number = unit_number
-        tz = pytz.timezone('Asia/Shanghai')
-        record.datetime = datetime.now(tz=tz)
+        record.datetime = datetime.now()
         record.save()
