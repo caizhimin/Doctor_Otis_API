@@ -1,6 +1,6 @@
+import pytz
 from django.db import models
 from datetime import datetime
-from dateutil import tz, zoneinfo
 # Create your models here.
 
 class ApiRecord(models.Model):
@@ -8,7 +8,7 @@ class ApiRecord(models.Model):
     user_agent = models.CharField(max_length=200, null=True, blank=True, verbose_name='User-Agent')
     authorization = models.CharField(max_length=100, null=True, blank=True, verbose_name='Authorization')
     unit_number = models.CharField(max_length=20, null=True, blank=True, verbose_name='梯号')
-    datetime = models.DateTimeField(verbose_name='时间')
+    datetime = models.DateTimeField(null=True, blank=True, verbose_name='时间')
 
     @staticmethod
     def create(client_ip, user_agent, authorization, unit_number):
@@ -17,7 +17,6 @@ class ApiRecord(models.Model):
         record.user_agent = user_agent
         record.authorization = authorization
         record.unit_number = unit_number
-        tz_sh = tz.gettz('Asia/Shanghai')
-        record.datetime = datetime.now(tz=tz_sh)
-        print(1)
+        tz = pytz.timezone('Asia/Shanghai')
+        record.datetime = datetime.now(tz=tz)
         record.save()
