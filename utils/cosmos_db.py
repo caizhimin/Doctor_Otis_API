@@ -1,5 +1,6 @@
 import azure.cosmos.cosmos_client as cosmos_client
 import inspect
+import time
 
 environment = 'WHQ dev wap-fftsbh-dev-chn-vegctujtkpkfg web service'
 cosmos_url = 'https://cdb-tsbh-dev-chn-vegctujtkpkfg.documents.azure.com:443/'
@@ -114,6 +115,22 @@ class Cosmos:
             print('delete % success' % _id)
         except Exception as e:
             print(str(e))
+
+    def check_unit_offline_three_days(self, unit_number):
+        """
+        检查电梯三天内是否离线
+        :param unit_number:
+        :return:
+        """
+        query = cosmos.query('COLLECTION_DSLOG_MASTER', fields=('GWToCloud', 'GWToCloudChangeTime'),
+                             query_params={'UnitNumber': unit_number})[0]
+        GWToCloud = str(query.get('GWToCloud'))
+        GWToCloudChangeTime = query.get('GWToCloudChangeTime')
+        now = int(time.time())
+        if GWToCloudChangeTime and (GWToCloud == '1') and ((now - GWToCloudChangeTime) >= 3 * 24 * 3600):
+            return True
+        else:
+            return False
 
 
 cosmos = Cosmos(cosmos_url, master_key, 'DB_TBS_HANDLER')
