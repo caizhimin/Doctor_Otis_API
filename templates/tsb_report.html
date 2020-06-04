@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+    <div class="input-field col s12">
+        <select name="tsb_cities" id="tsb_cities">
+            <option value="none">请选择城市</option>
+            {% for i in tsb_cities %}#}
+                <option value={{ i.id }}>{{ i.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="input-field col s12" id="type_div">
+        <select name="tsb_report_types" id="tsb_report_types">
+            <option value=0>全部上报故障类型</option>
+        </select>
+    </div>
+
+    <div class="input-field col s12">
+        <input type="text" class="datepicker" value="选择起始日期" id="start_date">
+
+    </div>
+
+    <div class="input-field col s12">
+        <input type="text" class="datepicker" value="选择结束日期" id="end_date">
+    </div>
+    <table id="table" data-toggle="table" data-pagination="true" data-side-pagination="server"
+           data-page-size="5" data-url="json/">
+        <thead>
+        <tr>
+            <th data-field="id">ID</th>
+            <th data-field="City">城市</th>
+            <th data-field="UnitNumber">梯号</th>
+            <th data-field="Type">类型</th>
+            <th data-field="RequestData">请求数据</th>
+            <th data-field="RequestTime">请求时间</th>
+            <th data-field="ResponseData">响应数据</th>
+            <th data-field="ResponseTime">响应时间</th>
+            <th data-field="Error">报错</th>
+
+        </tr>
+        </thead>
+    </table>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        let city_id
+        let type_id
+        let start_date
+        let end_date
+        $("#tsb_cities").change(function () {
+            city_id = $(this).val();
+            if (city_id == 'none') {
+                $('#tsb_report_types').empty()
+            }
+            else {
+                $.ajax({
+                    url: '/get_tsb_report_types',
+                    data: {"city_id": $(this).val()},
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var _id = $('#type_div ul').attr('id')
+                        var content = '';
+                        var li_content = ''
+                        li_content += '<li' + ' id="' + _id + '"' + 'tabindex="0" class><span>' + '请选择上报故障类型' + '</span></li>'
+                        content += '<option value=' + 0 + '>' + '请选择上报故障类型' + '</option>'
+                        $.each(JSON.parse(data), function (i, item) {
+                            li_content += '<li' + ' id="' + _id + '"' + 'tabindex="0" class><span>' + item.name + '</span></li>'
+                            content += '<option value=' + item.id + '>' + item.name + '</option>'
+
+                        });
+                        $('#tsb_report_types').html(content)
+                        $('#type_div ul').html(li_content)
+                        $('select').formSelect();
+
+
+                    },
+
+                });
+
+            }
+        });
+        $('#tsb_report_types').change(function () {
+
+            type_id = $(this).val();
+            $("#table").bootstrapTable('refreshOptions', {
+                'url': 'json?city_id=' + city_id + '&type_id=' + type_id,
+                pageNumber: 1
+            });
+
+        })
+
+
+        $('#start_date').change(function () {
+            start_date = $(this).val();
+            if (start_date && end_date && city_id && type_id) {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?start_date=' + start_date + '&end_date=' + end_date + '&city_id=' + city_id + '&type_id=' + type_id,
+                    pageNumber: 1
+                });
+            }
+            if (start_date && end_date) {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?start_date=' + start_date + '&end_date=' + end_date,
+                    pageNumber: 1
+                });
+            }
+
+        })
+
+        $('#end_date').change(function () {
+            end_date = $(this).val()
+            if (start_date && end_date && city_id && type_id) {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?start_date=' + start_date + '&end_date=' + end_date + '&city_id=' + city_id + '&type_id=' + type_id,
+                    pageNumber: 1
+                });
+            }
+            if (start_date && end_date) {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?start_date=' + start_date + '&end_date=' + end_date,
+                    pageNumber: 1
+                });
+            }
+        })
+
+
+        $('#sandbox-container .input-daterange').datepicker({
+            format: "yyyy-mm-dd",
+            language: "zh-CN"
+        });
+
+
+    </script>
+
+
+
+{% endblock %}
