@@ -1,0 +1,1 @@
+default_app_config = 'TSB_elevator_management.apps.TsbElevatorManagementConfig'
