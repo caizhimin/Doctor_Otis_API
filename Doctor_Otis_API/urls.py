@@ -21,6 +21,7 @@ from rest_framework import generics, permissions, serializers
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 from django.conf import settings
 from oauth2_provider.urls import base_urlpatterns, app_name
+from TSB_elevator_management.views import *
 import oauth2_provider.views as oauth2_views
 
 admin.autodiscover()
@@ -66,8 +67,12 @@ urlpatterns = [
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
     re_path('^delete_token/$', views.delete_expires_token),
     path('test/', views.test),
-]
+    path('tsb_report/', tsb_report_page),
+    re_path('json', tsb_report_json),
+    path(r'get_tsb_report_types', get_tsb_report_types, name='get_tsb_report_types'),
 
+]
+# json?search=&sort=&order=asc&offset=0&limit=10
 if settings.DEBUG:
     urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
     urlpatterns += path('admin/', admin.site.urls),
