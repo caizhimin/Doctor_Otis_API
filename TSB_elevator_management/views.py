@@ -36,7 +36,7 @@ def tsb_report_json(request):
         raw_sql += """ WHERE c.RequestTime >= '%s' and c.RequestTime <= '%s'""" % (
             start_date + 'T00:00:00', end_date + 'T23:59:59')
         if city_id:
-            raw_sql += """ c.City=%s""" % city_id
+            raw_sql += """AND c.City=%s""" % city_id
             if type_id:
                 raw_sql += """ AND c.Type=%s""" % type_id
     elif city_id:
@@ -64,6 +64,7 @@ def tsb_report_json(request):
     df['ResponseTime'].replace('T', '<br>', inplace=True, regex=True)
     df['ResponseTime'] = df['ResponseTime'].str.slice(0, -7)
     df['Error'] = df['Error'].apply(escape)
+    df['ResponseData'] = df['ResponseData'].apply(escape)
     print(df['RequestTime'])
     print(df)
     rows = df.to_dict(orient='records')  # output just the records (no fieldnames) as a collection of tuples
