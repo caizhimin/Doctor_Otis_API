@@ -3,43 +3,45 @@
 {% block body %}
 
 
+    <div class="row">
+        <div class="input-field col s1">
+            <select name="tsb_cities" id="tsb_cities">
+                <option value="none">请选择城市</option>
+                {% for i in tsb_cities %}
+                    <option value={{ i.id }}>{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-field col s1" id="type_div">
+            <select name="tsb_report_types" id="tsb_report_types">
+                <option value=0>全部上报故障类型</option>
+            </select>
+        </div>
 
-    <div class="input-field col s12">
-        <select name="tsb_cities" id="tsb_cities">
-            <option value="none">请选择城市</option>
-            {% for i in tsb_cities %}#}
-                <option value={{ i.id }}>{{ i.name }}</option>
-            {% endfor %}
-        </select>
+        <div class="input-field col s1">
+            <input type="text" class="datepicker" value="选择起始日期" id="start_date">
+
+        </div>
+        <div class="input-field col s1">
+            <input type="text" class="datepicker" value="选择结束日期" id="end_date">
+        </div>
     </div>
 
-    <div class="input-field col s12" id="type_div">
-        <select name="tsb_report_types" id="tsb_report_types">
-            <option value=0>全部上报故障类型</option>
-        </select>
-    </div>
 
-    <div class="input-field col s12">
-        <input type="text" class="datepicker" value="选择起始日期" id="start_date">
 
-    </div>
-
-    <div class="input-field col s12">
-        <input type="text" class="datepicker" value="选择结束日期" id="end_date">
-    </div>
     <table id="table" data-toggle="table" data-pagination="true" data-side-pagination="server"
-           data-page-size="5" data-url="json/">
+           data-page-size="10" data-url="json/">
         <thead>
         <tr>
-            <th data-field="id">ID</th>
-            <th data-field="City">城市</th>
-            <th data-field="UnitNumber">梯号</th>
-            <th data-field="Type">类型</th>
-            <th data-field="RequestData">请求数据</th>
-            <th data-field="RequestTime">请求时间</th>
-            <th data-field="ResponseData">响应数据</th>
-            <th data-field="ResponseTime">响应时间</th>
-            <th data-field="Error">报错</th>
+            <th data-field="id" class="center">ID</th>
+            <th data-field="City" class="center">城市</th>
+            <th data-field="UnitNumber" class="center">梯号</th>
+            <th data-field="Type" class="center">类型</th>
+            <th data-field="RequestData" class="center">请求数据</th>
+            <th data-field="RequestTime" class="center">请求时间</th>
+            <th data-field="ResponseData" class="center">响应数据</th>
+            <th data-field="ResponseTime" class="center">响应时间</th>
+            <th data-field="Error" class="center">报错</th>
 
         </tr>
         </thead>
@@ -85,14 +87,38 @@
                 });
 
             }
+
+            if (start_date && end_date && city_id) {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?city_id=' + city_id + '&start_date=' + start_date + '&end_date=' + end_date,
+                    pageNumber: 1
+                });
+            }
+            else {
+                $("#table").bootstrapTable('refreshOptions', {
+                    'url': 'json?city_id=' + city_id,
+                    pageNumber: 1
+                })
+            }
+
         });
         $('#tsb_report_types').change(function () {
-
             type_id = $(this).val();
-            $("#table").bootstrapTable('refreshOptions', {
+
+            if (start_date && end_date && type_id) {
+                $("#table").bootstrapTable('refreshOptions', {
+                'url': 'json?city_id=' + city_id + '&type_id=' + type_id + '&start_date=' + start_date + '&end_date=' + end_date,
+                pageNumber: 1
+            });
+
+            }
+            else {
+                $("#table").bootstrapTable('refreshOptions', {
                 'url': 'json?city_id=' + city_id + '&type_id=' + type_id,
                 pageNumber: 1
             });
+            }
+
 
         })
 
@@ -122,7 +148,7 @@
                     pageNumber: 1
                 });
             }
-            if (start_date && end_date) {
+            else if (start_date && end_date) {
                 $("#table").bootstrapTable('refreshOptions', {
                     'url': 'json?start_date=' + start_date + '&end_date=' + end_date,
                     pageNumber: 1
