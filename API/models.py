@@ -69,3 +69,7 @@ class ApiRecord(models.Model):
                             'A_1_24', 'A_1_25', 'A_1_28', 'A_2_3', 'A_2_5', 'A_2_8', 'A_3_4', 'A_4_2']:
                     exec('record.' + item + '_extra_floor' + '=' + (str(floorInfo) if floorInfo else 'None'))
         record.save()
+
+    class Meta:
+        verbose_name = 'API 历史记录'
+        verbose_name_plural = 'API 历史记录'

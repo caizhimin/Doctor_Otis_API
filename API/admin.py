@@ -28,3 +28,6 @@ class ApiRecordAdmin(admin.ModelAdmin):
     #     return obj.city.name
 
     # city_name.short_description = '城市'
+
+admin.site.site_header = "Doctor Otis 数据后台管理"
+
