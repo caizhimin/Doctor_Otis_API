@@ -70,13 +70,13 @@ urlpatterns = [
     path('tsb_report/', tsb_report_page),
     re_path('json', tsb_report_json),
     path(r'get_tsb_report_types', get_tsb_report_types, name='get_tsb_report_types'),
+    path('admin/', admin.site.urls)
 
 ]
 # json?search=&sort=&order=asc&offset=0&limit=10
 if settings.DEBUG:
     urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    # urlpatterns += path('admin/', admin.site.urls),
 
 else:
     urlpatterns += base_urlpatterns
-
-urlpatterns += path('admin/', admin.site.urls)
