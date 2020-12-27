@@ -27,7 +27,7 @@ def DO_data(request, unit_number):
             return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
         if data:
             ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,
-                             unit_number=unit_number, status=1)
+                             unit_number=unit_number, status=1, data=data[0]['DO_value'])
             return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
         else:
             ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,

@@ -1,0 +1,13 @@
+td {
+    text-align: center;
+    border-left: 1px solid #F6F6F6;
+    vertical-align: middle;
+}
+
+th{text-align: center}
+
+.field-id{vertical-align: middle;}
+.field-user_agent{text-align: left; }
+.column-user_agent{width: 50px}
+
+
