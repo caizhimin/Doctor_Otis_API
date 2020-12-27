@@ -1,24 +1,25 @@
 from django.contrib import admin
 from TSB_elevator_management.models import TSBCity, Elevator
-
+from Doctor_Otis_API.settings import DEBUG
 
 # Register your models here.
 
-@admin.register(Elevator)
-class ElevatorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'unit_number', 'tsb_regcode', 'unit_regcode', 'branch', 'city_name')
+if DEBUG:
+    @admin.register(Elevator)
+    class ElevatorAdmin(admin.ModelAdmin):
+        list_display = ('id', 'unit_number', 'tsb_regcode', 'unit_regcode', 'branch', 'city_name')
 
-    search_fields = ('unit_number', 'tsb_regcode', 'unit_regcode',)
+        search_fields = ('unit_number', 'tsb_regcode', 'unit_regcode',)
 
-    list_filter = ('city',)
+        list_filter = ('city',)
 
-    def city_name(self, obj):
-        return obj.city.name
+        def city_name(self, obj):
+            return obj.city.name
 
-    city_name.short_description = '城市'
+        city_name.short_description = '城市'
 
 
-@admin.register(TSBCity)
-class TSBCityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name',)
-    # readonly_fields = ('name',)
+    @admin.register(TSBCity)
+    class TSBCityAdmin(admin.ModelAdmin):
+        list_display = ('id', 'name',)
+        # readonly_fields = ('name',)
