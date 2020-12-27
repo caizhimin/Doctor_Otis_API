@@ -75,7 +75,8 @@ urlpatterns = [
 # json?search=&sort=&order=asc&offset=0&limit=10
 if settings.DEBUG:
     urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    urlpatterns += path('admin/', admin.site.urls),
 
 else:
     urlpatterns += base_urlpatterns
+
+urlpatterns += path('admin/', admin.site.urls)
