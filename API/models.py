@@ -59,15 +59,16 @@ class ApiRecord(models.Model):
         record.unit_number = unit_number
         record.datetime = datetime.now()
         record.status = status
-        if data.get('autoItems') and isinstance(data.get('autoItems'), list):
-            for i in data.get('autoItems'):
-                item = i['item'].replace('-', '_', 1)
-                tsbStatus = i['tsbStatus']
-                floorInfo = i['floorInfo']
-                exec('record.' + item + '=' + str(tsbStatus))
-                if item in ['A_1_4', 'A_1_5', 'A_1_7', 'A_1_19', 'A_1_20', 'A_1_21', 'A_1_22', 'A_1_23',
-                            'A_1_24', 'A_1_25', 'A_1_28', 'A_2_3', 'A_2_5', 'A_2_8', 'A_3_4', 'A_4_2']:
-                    exec('record.' + item + '_extra_floor' + '=' + (str(floorInfo) if floorInfo else 'None'))
+        if data:
+            if data.get('autoItems') and isinstance(data.get('autoItems'), list):
+                for i in data.get('autoItems'):
+                    item = i['item'].replace('-', '_', 1)
+                    tsbStatus = i['tsbStatus']
+                    floorInfo = i['floorInfo']
+                    exec('record.' + item + '=' + str(tsbStatus))
+                    if item in ['A_1_4', 'A_1_5', 'A_1_7', 'A_1_19', 'A_1_20', 'A_1_21', 'A_1_22', 'A_1_23',
+                                'A_1_24', 'A_1_25', 'A_1_28', 'A_2_3', 'A_2_5', 'A_2_8', 'A_3_4', 'A_4_2']:
+                        exec('record.' + item + '_extra_floor' + '=' + (str(floorInfo) if floorInfo else 'None'))
         record.save()
 
     class Meta:
