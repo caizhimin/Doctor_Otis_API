@@ -1,7 +1,6 @@
 from datetime import datetime
-from django.shortcuts import render
 from utils.cosmos_db import cosmos
-from rest_framework import status
+from utils.DO_mysql import get_unit_oil, reset_unit_oil
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse, Http404
@@ -26,6 +25,14 @@ def DO_data(request, unit_number):
                              unit_number=unit_number, status=-1)
             return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
         if data:
+            oil = get_unit_oil(unit_number)
+            for i in data[0]['DO_value']['autoItems']:
+                if i['item'] == 'A-1_13':
+                    if oil < 71:
+                        i['tsbStatus'] = 1
+                        reset_unit_oil(unit_number)
+                    else:
+                        i['tsbStatus'] = 0
             ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,
                              unit_number=unit_number, status=1, data=data[0]['DO_value'])
             return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
