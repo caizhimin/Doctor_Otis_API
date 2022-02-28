@@ -2,9 +2,8 @@ import azure.cosmos.cosmos_client as cosmos_client
 import inspect
 import time
 
-environment = 'WHQ dev wap-fftsbh-dev-chn-vegctujtkpkfg web service'
-cosmos_url = 'https://cdb-tsbh-dev-chn-vegctujtkpkfg.documents.azure.com:443/'
-master_key = 'XP58ILePf6LSpWitpQvYH45HNK0WtisFmWizJLxECnT0VsoTrjmlniCp0tS4vSzOFlHEXTEfa375jIrvXlyr1Q=='
+DS_QA_cosmos_url = 'https://cdb-datascience-qa-chn-gyfvuslvqjj3y.documents.azure.com:443/'
+DS_QA_master_key = 'DPnxGR3giIybeLAMmrAQckSJWfu3IcCQANva3MOzxLPLytSoC6jmNrqS4S2KZj7DLlJQ5jQvqqiPvnCilOPsoQ=='
 
 
 def get__function_name():
@@ -133,7 +132,7 @@ class Cosmos:
             return False
 
 
-cosmos = Cosmos(cosmos_url, master_key, 'DB_TBS_HANDLER')
+cosmos = Cosmos(DS_QA_cosmos_url, DS_QA_master_key, 'smart-engine')
 
 
 
