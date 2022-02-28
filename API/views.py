@@ -19,7 +19,7 @@ def DO_data(request, unit_number):
     Authorization = request.headers.get('Authorization')
     if request.method in ('GET', 'POST'):
         try:
-            data = cosmos.query('DO_auto_maintenance_result',
+            data = cosmos.query('DO_Auto_Maintenance_Result',
                                 fields=('DO_value',), query_params={'UnitNumber': unit_number})
         except:
             ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,
@@ -193,7 +193,7 @@ def DO_data(request, unit_number):
                 ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
                                  authorization=Authorization,
                                  unit_number=unit_number, status=1, data=new_data)
-                cosmos.insert('DO_auto_maintenance_result',
+                cosmos.insert('DO_Auto_Maintenance_Result',
                               data={'UnitNumber': unit_number, 'DO_value': new_data})
                 return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
             else:
