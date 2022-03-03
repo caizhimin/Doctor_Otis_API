@@ -191,7 +191,6 @@ def DO_data(request, unit_number):
                                      authorization=Authorization,
                                      unit_number=unit_number, status=1, data=new_data)
                     data[0]['DO_value'] = new_data
-                    cosmos.update('DO_Auto_Maintenance_Result', replace_data=data[0])
                     return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
                     return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
