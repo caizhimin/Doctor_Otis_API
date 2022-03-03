@@ -347,8 +347,9 @@ def DO_data(request, unit_number):
                 ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
                                  authorization=Authorization,
                                  unit_number=unit_number, status=1, data=new_data)
-                cosmos.insert('DO_Auto_Maintenance_Result',
-                              data={'UnitNumber': unit_number, 'DO_value': new_data})
+                if unit_number:
+                    cosmos.insert('DO_Auto_Maintenance_Result',
+                                  data={'UnitNumber': unit_number, 'DO_value': new_data})
                 return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
             else:
                 ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
