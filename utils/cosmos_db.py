@@ -2,8 +2,8 @@ import azure.cosmos.cosmos_client as cosmos_client
 import inspect
 import time
 
-DS_QA_cosmos_url = 'https://cdb-datascience-qa-chn-gyfvuslvqjj3y.documents.azure.com:443/'
-DS_QA_master_key = 'DPnxGR3giIybeLAMmrAQckSJWfu3IcCQANva3MOzxLPLytSoC6jmNrqS4S2KZj7DLlJQ5jQvqqiPvnCilOPsoQ=='
+DS_QA_cosmos_url = 'https://cosmos-ds-dre-dev-china-001.documents.azure.com:443/'
+DS_QA_master_key = 'ZdnspmAuIP2MV8aFG7m8gKn3Ceo01sRBN0NlU58pSep0nbYVjFOX0CJX9i9UGHPgI2aQCgtdU4VXo0cSLEFG4g=='
 
 
 def get__function_name():
@@ -132,7 +132,7 @@ class Cosmos:
             return False
 
 
-cosmos = Cosmos(DS_QA_cosmos_url, DS_QA_master_key, 'smart-engine')
+cosmos = Cosmos(DS_QA_cosmos_url, DS_QA_master_key, 'DoctorOtis')
 
 
 
