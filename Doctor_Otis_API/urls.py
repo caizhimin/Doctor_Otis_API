@@ -66,7 +66,7 @@ urlpatterns = [
     # path('groups/', GroupList.as_view()),
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
     # re_path('^delete_token/$', views.delete_expires_token),
-    path('test/', views.test),
+    # path('test/', views.test),
     path('tsb_report/', tsb_report_page),
     re_path('json', tsb_report_json),
     path(r'get_tsb_report_types', get_tsb_report_types, name='get_tsb_report_types'),
