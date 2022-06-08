@@ -3,9 +3,9 @@ from datetime import datetime
 from utils.cosmos_db import cosmos
 from utils.DO_mysql import get_unit_oil, reset_unit_oil
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import HttpResponse, Http404
-from oauth2_provider.oauth2_validators import AccessToken
+# from rest_framework.response import Response
+from django.http import HttpResponse, Http404, JsonResponse
+# from oauth2_provider.oauth2_validators import AccessToken
 from API.models import ApiRecord
 
 
@@ -46,7 +46,7 @@ def DO_data(request, unit_number):
                 # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
                 #                  authorization=Authorization,
                 #                  unit_number=unit_number, status=1, data=data[0]['DO_value'])
-                return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
+                return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
             else:
                 url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
                 Ocp_Apim_Subscription_Key = 'd7299181f9b94dfb8cfcefbb676a4c1d'
@@ -199,9 +199,9 @@ def DO_data(request, unit_number):
                     #                  authorization=Authorization,
                     #                  unit_number=unit_number, status=1, data=new_data)
                     data[0]['DO_value'] = new_data
-                    return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
+                    return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
-                    return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+                    return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
         else:
             url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
             Ocp_Apim_Subscription_Key = 'd7299181f9b94dfb8cfcefbb676a4c1d'
@@ -357,12 +357,12 @@ def DO_data(request, unit_number):
                 if unit_number:
                     cosmos.insert('DO_Auto_Maintenance_Result',
                                   data={'UnitNumber': unit_number, 'DO_value': new_data})
-                return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
+                return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
             else:
                 # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
                 #                  authorization=Authorization,
                 #                  unit_number=unit_number, status=0)
-                return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+                return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
 
 
 @api_view(['GET'])
@@ -370,14 +370,14 @@ def test(request):
     return Response(111)
 
 
-def delete_expires_token(request):
-    """
-    删除过期token
-    :param request:
-    :return:
-    """
-    if request.META['REMOTE_ADDR'] == '127.0.0.1':
-        AccessToken.objects.filter(expires__lt=datetime.now()).delete()
-        return HttpResponse('delete expires token success')
-    else:
-        raise Http404
+# def delete_expires_token(request):
+#     """
+#     删除过期token
+#     :param request:
+#     :return:
+#     """
+#     if request.META['REMOTE_ADDR'] == '127.0.0.1':
+#         AccessToken.objects.filter(expires__lt=datetime.now()).delete()
+#         return HttpResponse('delete expires token success')
+#     else:
+#         raise Http404
