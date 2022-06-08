@@ -13,17 +13,17 @@ from API.models import ApiRecord
 
 @api_view(['POST', 'GET'])
 def DO_data(request, unit_number):
-    print(1111)
-    meta = request.META
-    HTTP_X_FORWARDED_FOR = meta.get('HTTP_X_FORWARDED_FOR')
-    try:
-        HTTP_USER_AGENT = request.headers.get('User-Agent')
-    except:
-        HTTP_USER_AGENT = ''
-    try:
-        Authorization = request.headers.get('Authorization')
-    except:
-        Authorization = ''
+    # print(1111)
+    # meta = request.META
+    # HTTP_X_FORWARDED_FOR = meta.get('HTTP_X_FORWARDED_FOR')
+    # try:
+    #     HTTP_USER_AGENT = request.headers.get('User-Agent')
+    # except:
+    #     HTTP_USER_AGENT = ''
+    # try:
+    #     Authorization = request.headers.get('Authorization')
+    # except:
+    #     Authorization = ''
     if request.method in ('GET', 'POST'):
         # try:
         data = cosmos.query('DO_Auto_Maintenance_Result',
@@ -34,18 +34,18 @@ def DO_data(request, unit_number):
         #                      unit_number=unit_number, status=-1)
         #     return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
         if data:
-            oil = get_unit_oil(unit_number)
+            # oil = get_unit_oil(unit_number)
             if data[0].get('DO_value'):
-                for i in data[0]['DO_value']['autoItems']:
-                    if i['item'] == 'A-1_13':
-                        if oil < 71:
-                            i['tsbStatus'] = 1
-                            reset_unit_oil(unit_number)
-                        else:
-                            i['tsbStatus'] = 0
-                ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
-                                 authorization=Authorization,
-                                 unit_number=unit_number, status=1, data=data[0]['DO_value'])
+                # for i in data[0]['DO_value']['autoItems']:
+                #     if i['item'] == 'A-1_13':
+                #         if oil < 71:
+                #             i['tsbStatus'] = 1
+                #             reset_unit_oil(unit_number)
+                #         else:
+                #             i['tsbStatus'] = 0
+                # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
+                #                  authorization=Authorization,
+                #                  unit_number=unit_number, status=1, data=data[0]['DO_value'])
                 return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
             else:
                 url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
@@ -195,9 +195,9 @@ def DO_data(request, unit_number):
                                 "tsbString": "",
                                 "floorInfo": None
                             }]}
-                    ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
-                                     authorization=Authorization,
-                                     unit_number=unit_number, status=1, data=new_data)
+                    # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
+                    #                  authorization=Authorization,
+                    #                  unit_number=unit_number, status=1, data=new_data)
                     data[0]['DO_value'] = new_data
                     return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
@@ -351,17 +351,17 @@ def DO_data(request, unit_number):
                             "floorInfo": None
                         }]}
 
-                ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
-                                 authorization=Authorization,
-                                 unit_number=unit_number, status=1, data=new_data)
+                # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
+                #                  authorization=Authorization,
+                #                  unit_number=unit_number, status=1, data=new_data)
                 if unit_number:
                     cosmos.insert('DO_Auto_Maintenance_Result',
                                   data={'UnitNumber': unit_number, 'DO_value': new_data})
                 return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
             else:
-                ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
-                                 authorization=Authorization,
-                                 unit_number=unit_number, status=0)
+                # ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
+                #                  authorization=Authorization,
+                #                  unit_number=unit_number, status=0)
                 return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
 
 
