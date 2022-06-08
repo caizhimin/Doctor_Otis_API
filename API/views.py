@@ -13,18 +13,26 @@ from API.models import ApiRecord
 
 @api_view(['POST', 'GET'])
 def DO_data(request, unit_number):
+    print(1111)
     meta = request.META
     HTTP_X_FORWARDED_FOR = meta.get('HTTP_X_FORWARDED_FOR')
-    HTTP_USER_AGENT = request.headers.get('User-Agent')
-    Authorization = request.headers.get('Authorization')
+    try:
+        HTTP_USER_AGENT = request.headers.get('User-Agent')
+    except:
+        HTTP_USER_AGENT = ''
+    try:
+        Authorization = request.headers.get('Authorization')
+    except:
+        Authorization = ''
     if request.method in ('GET', 'POST'):
-        try:
-            data = cosmos.query('DO_Auto_Maintenance_Result',
+        # try:
+        data = cosmos.query('DO_Auto_Maintenance_Result',
                                 fields=('DO_value',), query_params={'UnitNumber': unit_number})
-        except:
-            ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,
-                             unit_number=unit_number, status=-1)
-            return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
+        print(2222)
+        # except:
+        #     ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT, authorization=Authorization,
+        #                      unit_number=unit_number, status=-1)
+        #     return Response({'Result': -1, 'Message': '服务器错误，请求失败', 'Data': {}})
         if data:
             oil = get_unit_oil(unit_number)
             if data[0].get('DO_value'):

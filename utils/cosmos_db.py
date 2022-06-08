@@ -12,9 +12,10 @@ def get__function_name():
 
 
 class Cosmos:
-    def __init__(self, url, master_key, database_id):
-        self.client = cosmos_client.CosmosClient(url, {'masterKey': master_key})
-        self.database_id = database_id
+    def __init__(self, url="", key="", database_id=""):
+
+        self.client = cosmos_client.CosmosClient(url, {'masterKey': key})
+        self.database = self.client.get_database_client(database_id)
 
     def insert(self, container_id, data):
         """
@@ -24,12 +25,13 @@ class Cosmos:
         :param data: 需要插入的字典
         :return:
         """
+        result = None
         try:
-            return self.client.UpsertItem("dbs/" + self.database_id + "/colls/" + container_id, data)
-            # print('insert %s success' % container_id)
-        except Exception as error:
-            print(str('%s error (%s)' % (get__function_name(), error)))
-            return None
+            container = self.database.get_container_client(container_id)
+            result = container.create_item(data)
+        except Exception as ex:
+            result = None
+        return result
 
     def update(self, container_id, replace_data):
         """
@@ -39,11 +41,8 @@ class Cosmos:
         :param replace_data: 需要更新的全文字典
         :return:
         """
-        try:
-            return self.client.UpsertItem("dbs/" + self.database_id + "/colls/" + container_id, replace_data)
-            # print('update %s  success' % (container_id,))
-        except Exception as error:
-            print(str('%s error (%s)' % (get__function_name(), error)))
+        container = self.database.get_container_client(container_id)
+        return container.upsert_item(replace_data)
 
     def query(self, container_id, fields=None, query_params=None,
               order_by=None, desc=False, offset=0, limit=None, cross_partition=True):
@@ -80,40 +79,20 @@ class Cosmos:
                 sql += ' DESC'
         if limit:
             sql += ' OFFSET %s LIMIT %s' % (offset, limit)
-            # print(sql)
-        try:
-            items = self.client.QueryItems("dbs/" + self.database_id + "/colls/" + container_id, sql,
-                                           {'enableCrossPartitionQuery': cross_partition})
-            return list(items)
-        except Exception as e:
-            print(str(e))
-            return list()
+            print(sql)
+        container = self.database.get_container_client(container_id)
+        items = container.query_items(sql, enable_cross_partition_query=cross_partition)
+        return list(items)
 
-    def query_by_raw(self, container_id, raw_sql, offset=0, cross_partition=True):
-        # print(raw_sql)
-        try:
-            items = self.client.QueryItems("dbs/" + self.database_id + "/colls/" + container_id, raw_sql,
-                                           {'enableCrossPartitionQuery': cross_partition})
-            return list(items)
-        except Exception as e:
-            print(str(e))
-            return list()
+    def query_by_raw(self, container_id, raw_sql, parameters=None, partition_key=None, cross_partition=True):
+        container = self.database.get_container_client(container_id)
+        items = container.query_items(raw_sql, parameters=None, partition_key=partition_key,
+                                      enable_cross_partition_query=cross_partition)
+        return list(items)
 
-    def delete(self, container_id, _id, partition_key_value):
-        """
-
-        :param database_id:
-        :param container_id:
-        :param _id:
-        :param partition_key_value: 分区键对应的值，一般都是梯号UnitNumber的具体值
-        :return:
-        """
-        try:
-            self.client.DeleteItem("dbs/" + self.database_id + "/colls/" + container_id + "/docs/" + _id,
-                                   {'partitionKey': partition_key_value})
-            print('delete % success' % _id)
-        except Exception as e:
-            print(str(e))
+    def deleteItem(self, container_id, data, partition_key=None):
+        container = self.database.get_container_client(container_id)
+        container.delete_item(data, partition_key)
 
     def check_unit_offline_three_days(self, unit_number):
         """
@@ -135,27 +114,3 @@ class Cosmos:
 cosmos = Cosmos(DS_QA_cosmos_url, DS_QA_master_key, 'DoctorOtis')
 
 
-
-if __name__ == '__main__':
-    # environment = 'ChinaResGrp'
-    # cosmos_url1 = 'https://otispoc.documents.azure.com:443/'
-    # master_key1 = 'ZvmK12L4XdqZHTcWyBEUC8fK7FQw33JLWjLy6dpRy71PodVr6JpaoE9cD8nvWZsLwpvSLLPfB19XONbfqXjpLQ=='
-    # cosmos_local = Cosmos(cosmos_url1, master_key1)
-    # master = cosmos_local.query('DB_TBS_HANDLER', 'COLLECTION_DSLOG_MASTER')
-    # for i in master:
-    #     i['PK'] = 'M'
-    #     print(i['UnitNumber'])
-    #     cosmos.insert('DB_TBS_HANDLER', 'COLLECTION_DSLOG_MASTER', i)
-    event_class = cosmos.query('tsb_statistics', query_params={'type': 'c_ff_events'})
-    for i in event_class[0]['data']:
-        EventCode = i['event_name'][:-1]
-        print(EventCode)
-        result = cosmos.query('DB_TBS_HANDLER', 'SEND_MAINTENANCE_TO_OES',
-                              query_params={'EventCode': EventCode})
-        _list = EventCode.split(';')
-        new_str = ";".join(list(set(_list)))
-        print(result, len(result))
-        for i in result:
-            i['EventCode'] = new_str
-            print(i['id'])
-            cosmos.update('SEND_MAINTENANCE_TO_OES', replace_data=i)
