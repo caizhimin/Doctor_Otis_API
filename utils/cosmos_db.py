@@ -25,6 +25,7 @@ class Cosmos:
         :param data: 需要插入的字典
         :return:
         """
+        print('insert')
         result = None
         try:
             container = self.database.get_container_client(container_id)

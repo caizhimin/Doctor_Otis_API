@@ -364,7 +364,7 @@ def DO_data(request, unit_number):
                     if unit_number:
                         cosmos.insert('DO_Auto_Maintenance_Result',
                                       data={'UnitNumber': unit_number, 'DO_value': new_data})
-                    print(3333)
+                    print(44444)
                     return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
                     ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
