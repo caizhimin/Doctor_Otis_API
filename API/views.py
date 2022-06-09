@@ -59,148 +59,151 @@ def DO_data(request, unit_number):
                     "FetchCount": False,
                     "commissioningState": "commissioned,fullycommissioned,partiallycommissioned"
                 }
-                res = requests.post(headers=headers, url=url, json=req_text).json()
-                if res.get('units'):
-                    new_data = {
-                        "autoItems": [
-                            {
-                                "item": "A-1_7",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-2_3",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_21",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-2_8",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_22",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_28",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-2_5",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-3_4",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_24",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_23",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_20",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_19",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_5",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-4_2",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_4",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_6",
-                                "tsbStatus": 1,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_13",
-                                "tsbStatus": 80,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_1",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-1_25",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-2_2",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-3_5",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            },
-                            {
-                                "item": "A-4_4",
-                                "tsbStatus": 0,
-                                "tsbString": "",
-                                "floorInfo": None
-                            }]}
-                    ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
-                                     authorization=Authorization,
-                                     unit_number=unit_number, status=1, data=new_data)
-                    data[0]['DO_value'] = new_data
-                    return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
-                else:
+                try:
+                    res = requests.post(headers=headers, url=url, json=req_text).json()
+                    if res.get('units'):
+                        new_data = {
+                            "autoItems": [
+                                {
+                                    "item": "A-1_7",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-2_3",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_21",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-2_8",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_22",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_28",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-2_5",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-3_4",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_24",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_23",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_20",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_19",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_5",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-4_2",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_4",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_6",
+                                    "tsbStatus": 1,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_13",
+                                    "tsbStatus": 80,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_1",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-1_25",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-2_2",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-3_5",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                },
+                                {
+                                    "item": "A-4_4",
+                                    "tsbStatus": 0,
+                                    "tsbString": "",
+                                    "floorInfo": None
+                                }]}
+                        ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
+                                         authorization=Authorization,
+                                         unit_number=unit_number, status=1, data=new_data)
+                        data[0]['DO_value'] = new_data
+                        return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
+                    else:
+                        return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+                except:
                     return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
         else:
             url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
