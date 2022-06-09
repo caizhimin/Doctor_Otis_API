@@ -1,4 +1,5 @@
 import requests
+import uuid
 from datetime import datetime
 from utils.cosmos_db import cosmos
 from utils.DO_mysql import get_unit_oil, reset_unit_oil
@@ -363,7 +364,7 @@ def DO_data(request, unit_number):
                                      unit_number=unit_number, status=1, data=new_data)
                     if unit_number:
                         cosmos.insert('DO_Auto_Maintenance_Result',
-                                      data={'UnitNumber': unit_number, 'DO_value': new_data})
+                                      data={'id': str(uuid.uuid4()), 'UnitNumber': unit_number, 'DO_value': new_data})
                     print(44444)
                     return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
