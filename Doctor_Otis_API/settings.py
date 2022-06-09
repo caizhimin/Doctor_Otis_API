@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY") if os.environ.get("SECRET_KEY") else '#=!5-!mowf(k!j7-k*qxbp+cs($sa1+%nya5-k(eyw)+@^&s24'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['https://do-api-chn-vegctujtkpkfg.azurewebsites.net', '*']
 
