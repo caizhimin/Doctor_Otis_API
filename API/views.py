@@ -4,7 +4,7 @@ from datetime import datetime
 from utils.cosmos_db import cosmos
 from utils.DO_mysql import get_unit_oil, reset_unit_oil
 from rest_framework.decorators import api_view
-# from rest_framework.response import Response
+from rest_framework.response import Response
 from django.http import HttpResponse, Http404, JsonResponse
 # from oauth2_provider.oauth2_validators import AccessToken
 from API.models import ApiRecord
@@ -47,7 +47,7 @@ def DO_data(request, unit_number):
                                  authorization=Authorization,
                                  unit_number=unit_number, status=1, data=data[0]['DO_value'])
                 print(2222)
-                return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
+                return Response({'Result': 0, 'Message': '请求成功', 'Data': data[0]['DO_value']})
             # else:
             #     url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
             #     Ocp_Apim_Subscription_Key = 'd7299181f9b94dfb8cfcefbb676a4c1d'
@@ -203,11 +203,11 @@ def DO_data(request, unit_number):
             #                              authorization=Authorization,
             #                              unit_number=unit_number, status=1, data=new_data)
             #             data[0]['DO_value'] = new_data
-            #             return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
+            #             return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
             #         else:
-            #             return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+            #             return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
             #     except:
-            #         return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+            #         return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
         else:
             url = 'https://developerstudio-china.otiselevator.com/iot-core/v2/api/CHN/v2/unitlist'
             Ocp_Apim_Subscription_Key = 'd7299181f9b94dfb8cfcefbb676a4c1d'
@@ -366,12 +366,12 @@ def DO_data(request, unit_number):
                         cosmos.insert('DO_Auto_Maintenance_Result',
                                       data={'id': str(uuid.uuid4()), 'UnitNumber': unit_number, 'DO_value': new_data})
                     print(44444)
-                    return JsonResponse({'Result': 0, 'Message': '请求成功', 'Data': new_data})
+                    return Response({'Result': 0, 'Message': '请求成功', 'Data': new_data})
                 else:
                     ApiRecord.create(client_ip=HTTP_X_FORWARDED_FOR, user_agent=HTTP_USER_AGENT,
                                      authorization=Authorization,
                                      unit_number=unit_number, status=0)
-                    return JsonResponse({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
+                    return Response({'Result': 0, 'Message': 'eventlog不存在', 'Data': {}})
             except Exception as e:
                 print(e)
 

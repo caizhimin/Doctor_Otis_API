@@ -18,11 +18,11 @@ from django.urls import path, re_path, include
 from API import views
 from django.contrib.auth.models import User, Group
 from rest_framework import generics, permissions, serializers
-# from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 from django.conf import settings
-# from oauth2_provider.urls import base_urlpatterns, app_name
+from oauth2_provider.urls import base_urlpatterns, app_name
 from TSB_elevator_management.views import *
-# import oauth2_provider.views as oauth2_views
+import oauth2_provider.views as oauth2_views
 
 admin.autodiscover()
 
@@ -41,29 +41,29 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 # Create the API views
-# class UserList(generics.ListCreateAPIView):
-#     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
-#
-# class UserDetails(generics.RetrieveAPIView):
-#     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#
-#
-# class GroupList(generics.ListAPIView):
-#     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-#     required_scopes = ['groups']
-#     queryset = Group.objects.all()
-#     serializer_class = GroupSerializer
+class UserList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetails(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class GroupList(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
+    required_scopes = ['groups']
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
 urlpatterns = [
-    # path('users/', UserList.as_view()),
-    # path('users/<pk>/', UserDetails.as_view()),
-    # path('groups/', GroupList.as_view()),
+    path('users/', UserList.as_view()),
+    path('users/<pk>/', UserDetails.as_view()),
+    path('groups/', GroupList.as_view()),
     re_path('^do_data/(?P<unit_number>[\S]{8})/$', views.DO_data),
     # re_path('^delete_token/$', views.delete_expires_token),
     # path('test/', views.test),
@@ -74,9 +74,9 @@ urlpatterns = [
 
 ]
 # json?search=&sort=&order=asc&offset=0&limit=10
-# if settings.DEBUG:
-    # urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    # urlpatterns += path('admin/', admin.site.urls),
+if settings.DEBUG:
+    urlpatterns += path('', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    urlpatterns += path('admin/', admin.site.urls),
 
-# else:
-#     urlpatterns += base_urlpatterns
+else:
+    urlpatterns += base_urlpatterns
