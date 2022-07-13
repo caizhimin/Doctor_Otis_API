@@ -2,8 +2,8 @@ import azure.cosmos.cosmos_client as cosmos_client
 import inspect
 import time
 
-DS_QA_cosmos_url = 'https://cosmos-ds-dre-dev-china-001.documents.azure.com:443/'
-DS_QA_master_key = 'ZdnspmAuIP2MV8aFG7m8gKn3Ceo01sRBN0NlU58pSep0nbYVjFOX0CJX9i9UGHPgI2aQCgtdU4VXo0cSLEFG4g=='
+DS_QA_cosmos_url = 'https://cosmos-ds-do-dev-china-001.documents.azure.com:443/'
+DS_QA_master_key = 'jbbvhNVRncK6u0omukJEml30NmyMfbPjnwZIRswY76oGKCej6OrvDxq1ltVTmw0YVSWWmNyfSuX5vJWWysbA5w=='
 
 
 def get__function_name():
